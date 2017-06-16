@@ -15,23 +15,6 @@
  */
 package com.alibaba.dubbo.common.extension;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Pattern;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.extension.support.ActivateComparator;
@@ -41,6 +24,15 @@ import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
 import com.alibaba.dubbo.common.utils.ConfigUtils;
 import com.alibaba.dubbo.common.utils.Holder;
 import com.alibaba.dubbo.common.utils.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Pattern;
 
 /**
  * Dubbo使用的扩展点获取。<p>
@@ -506,7 +498,9 @@ public class ExtensionLoader<T> {
                 EXTENSION_INSTANCES.putIfAbsent(clazz, (T) clazz.newInstance());
                 instance = (T) EXTENSION_INSTANCES.get(clazz);
             }
+            //注入属性
             injectExtension(instance);
+            //装饰
             Set<Class<?>> wrapperClasses = cachedWrapperClasses;
             if (wrapperClasses != null && wrapperClasses.size() > 0) {
                 for (Class<?> wrapperClass : wrapperClasses) {
