@@ -150,6 +150,7 @@ public class RegistryProtocol implements Protocol {
                 exporter = (ExporterChangeableWrapper<T>) bounds.get(key);
                 if (exporter == null) {
                     final Invoker<?> invokerDelegete = new InvokerDelegete<T>(originInvoker, getProviderUrl(originInvoker));
+                    //此处的扩展protocol是由动态字节码生成的适配类，会根据invoker的协议找到对应的protocol，这里找的是要暴露的协议对应protocol，通常是dubbo
                     exporter = new ExporterChangeableWrapper<T>((Exporter<T>)protocol.export(invokerDelegete), originInvoker);
                     bounds.put(key, exporter);
                 }

@@ -484,7 +484,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                             logger.info("Register dubbo service " + interfaceClass.getName() + " url " + url + " to registry " + registryURL);
                         }
                         Invoker<?> invoker = proxyFactory.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(Constants.EXPORT_KEY, url.toFullString()));
-
+                        //此处的扩展protocol是由动态字节码生成的适配类，会根据invoker的协议找到对应的protocol，这里找的是RegistryProtocol
                         Exporter<?> exporter = protocol.export(invoker);
                         exporters.add(exporter);
                     }
